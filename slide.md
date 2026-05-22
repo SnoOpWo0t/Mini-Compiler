@@ -1,36 +1,11 @@
----
-marp: true
-theme: default
-paginate: true
-size: 16:9
-header: "Mini C Compiler in Python — CSE 430 Compiler Design Lab"
-footer: "University of Asia Pacific — Fall 2023"
-style: |
-  section { font-size: 22px; }
-  h1 { color: #1a73e8; }
-  h2 { color: #1a73e8; border-bottom: 2px solid #1a73e8; padding-bottom: 4px; }
-  code { background: #f6f8fa; padding: 1px 4px; border-radius: 3px; }
-  pre { background: #0d1117; color: #e6edf3; padding: 8px; font-size: 16px; }
-  table { font-size: 18px; }
-  .small { font-size: 16px; }
----
-
 # Mini C Compiler in Python
 
-### A multi-phase compiler for a C-like language
-
-**Course:** CSE 430 — Compiler Design Lab
-**Project Type:** Individual Project
-**Implementation Language:** Python 3 + PLY (Python Lex-Yacc)
 **Target:** Tokens → AST → Symbol Table → TAC → Assembly
 
 ---
 
 ## Agenda
 
-1. Problem definition & scope
-2. Compiler architecture overview
-3. Source language specification
 4. **Phase 1 — Lexical Analysis** (with demo)
 5. **Phase 2 — Syntax Analysis** (with demo)
 6. **Phase 3 — Semantic Analysis & Symbol Table** (with demo)

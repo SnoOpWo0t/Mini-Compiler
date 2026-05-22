@@ -2,6 +2,7 @@ from dataclasses import dataclass
 from typing import Any, List, Optional, Tuple
 
 # The Tree Blueprint
+"Syntax Analyzer (parser) builds a tree of these nodes. "
 "This file doesn't do anything — it just defines the data structures (nodes) "
 "that the parser builds. "
 "Every language construct gets its own class:"
