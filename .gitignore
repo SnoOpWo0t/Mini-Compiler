@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+*.pyo
+parser.out
+parsetab.py
+output/*
+!output/.gitkeep
+.venv/
+.vscode/
+.idea/
