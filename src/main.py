@@ -1,8 +1,13 @@
-"""Mini C compiler driver.
-
+"""
+Mini C compiler driver.
 Usage:
     python src/main.py input/test_all.c
-
+    PLY(python lex/yacc) is used for lexing and parsing. The compiler is organized into 5 phases:
+1. Lexical analysis (tokenization)
+2. Syntax analysis (parsing into AST)       
+3. Semantic analysis (type checking, symbol table)
+4. Intermediate code generation (TAC)
+5. Target code generation (assembly)
 Runs every compiler phase and writes:
     output/tokens.txt
     output/ast.txt
@@ -12,10 +17,8 @@ Runs every compiler phase and writes:
 
 A banner per phase is printed to stdout; full content goes to the files.
 """
-
 import os
 import sys
-
 # Make sibling modules importable when run as a script
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
@@ -24,6 +27,10 @@ from parser      import build_parser, syntax_errors                # noqa: E402
 from ast_nodes   import ast_str                                    # noqa: E402
 from semantic    import Semantic                                   # noqa: E402
 from codegen     import TacGenerator, tac_to_asm                   # noqa: E402
+
+# Connections (how files interact):
+# - `lexer.py` provides `tokenize_all`, `build_lexer`, `render_tokens` and
+#   the `tokens` list used by `parser.py`. `main.py` calls `tokenize_all`
 
 
 HERE    = os.path.dirname(os.path.abspath(__file__))
@@ -59,20 +66,20 @@ def main():
         sys.exit(2)
 
     with open(path, "r", encoding="utf-8") as f:
-        source = f.read()
+        source = f.read() # read your .c file
 
     print(f"Compiling: {path}")
 
     # ---- Phase 1: Lexical analysis ------------------------------------------
     banner("Phase 1: Lexical Analysis")
-    tokenize_all(source)
+    tokenize_all(source)# Phase 1: tokenizes source and fills `token_log` in `lexer.py`
     write("tokens.txt", render_tokens())
 
     # ---- Phase 2: Parsing / AST --------------------------------------------
     banner("Phase 2: Syntax Analysis (AST)")
-    lexer  = build_lexer()
-    parser = build_parser()
-    ast    = parser.parse(source, lexer=lexer)
+    lexer  = build_lexer() #build lexer instance
+    parser = build_parser()# ply need parcer instance 
+    ast    = parser.parse(source, lexer=lexer) # Phase 2: parses source into AST nodes; syntax errors go to `syntax_errors`
 
     if syntax_errors:
         for e in syntax_errors:
@@ -86,7 +93,7 @@ def main():
     # ---- Phase 3: Semantic / Symbol table ----------------------------------
     banner("Phase 3: Semantic Analysis + Symbol Table")
     sem = Semantic()
-    sem_errors = sem.analyze(ast)
+    sem_errors = sem.analyze(ast)   # Phase 3: walks the AST, fills `sem.st` and collects semantic errors in `sem_errors`
     sym_text = sem.st.render()
     if sem_errors:
         sym_text += "\n\nSemantic Errors:\n"
@@ -104,12 +111,11 @@ def main():
     # ---- Phase 4: Three-address code ---------------------------------------
     banner("Phase 4: Intermediate Code (TAC)")
     gen = TacGenerator()
-    tac = gen.gen(ast)
-    write("tac.txt", "\n".join(tac))
+    tac = gen.gen(ast) # Phase 4: visits the AST to produce TAC; 
 
     # ---- Phase 5: Assembly --------------------------------------------------
     banner("Phase 5: Target Code Generation (Assembly)")
-    asm = tac_to_asm(tac)
+    asm = tac_to_asm(tac) # Phase 5
     write("assembly.asm", "\n".join(asm))
 
     banner("Compilation Successful")

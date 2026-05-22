@@ -11,6 +11,12 @@ from symbol_table import Symbol, SymbolTable
 
 class Semantic:
     """Phase 3 — builds scoped symbol table, checks types / scopes."""
+    # Connections:
+    # - Created and invoked by `main.py` after parsing. `main.py` calls
+    #   `Semantic().analyze(ast)` and then writes `sem.st.render()` to the
+    #   symbol table output.
+    # - Uses `Symbol` and `SymbolTable` from `symbol_table.py` to store
+    #   variables, functions and parameters with scope information.
 
     def __init__(self):
         self.st = SymbolTable()

@@ -1,14 +1,22 @@
 """Lexer definitions for the Mini-Compiler using PLY.
-
+ PLY (Python Lex-Yacc) library
 Defines token regexes, reserved words, and helper utilities to run
 the lexer and render token lists for debugging and output files.
+
+Connections:
+- Exports: `tokens` (list of token names used by PLY), `build_lexer()`,
+    `tokenize_all()`, `render_tokens()` and the `token_log` used for
+    inspection.
+- Imported by: `parser.py` imports the `tokens` name at module import
+    time (PLY requires the token list to be visible). `main.py` calls
+    `tokenize_all()` and `render_tokens()` during Phase 1.
 """
 
 import ply.lex as lex
 
 
 # Mapping of reserved identifiers to token names.
-# e.g. the word 'int' becomes token type 'INT'.
+#the word 'int' becomes token type 'INT'.
 reserved = {
     "int":      "INT",
     "float":    "FLOAT",
@@ -37,7 +45,7 @@ tokens = [
     "SEMI", "COMMA",
 ] + list(set(reserved.values()))
 
-
+#t_PLUS = r"\+" style lines — simple regex rules for single-character tokens.
 t_PLUS   = r"\+"
 t_MINUS  = r"-"
 t_MUL    = r"\*"
@@ -95,7 +103,7 @@ def t_STRING(t):
     return t
 
 
-def t_ID(t):
+def t_ID(t):# matches identifiers and reserved words. If the value is in `reserved`, change the token type to the reserved name.
     r"[A-Za-z_][A-Za-z0-9_]*"
     if t.value in reserved:
         t.type = reserved[t.value]
@@ -118,8 +126,10 @@ def _find_column(source, lexpos):
     return lexpos - last_nl
 
 
-def tokenize_all(source):
-    """Run the lexer to completion to populate `token_log` for display."""
+def tokenize_all(source):# 
+    """runs the lexer to completion and stores every token
+      in token_log for the output file.
+      This is separate from the lexer used by the parser"""
     token_log.clear()
     lx = lex.lex(errorlog=lex.NullLogger())
     lx.input(source)
@@ -140,7 +150,7 @@ def tokenize_all(source):
 
 
 def build_lexer():
-    # Construct and return a PLY lexer instance for parsing use.
+    # creates a fresh lexer instance specifically for the parse
     return lex.lex(errorlog=lex.NullLogger())
 
 

@@ -1,9 +1,15 @@
 from dataclasses import dataclass
 from typing import Any, List, Optional, Tuple
 
-# AST node definitions for the Mini-Compiler.
-# Each dataclass represents an AST node produced by the parser.
-# Keep these lightweight: fields map directly to language constructs.
+# The Tree Blueprint
+"This file doesn't do anything — it just defines the data structures (nodes) "
+"that the parser builds. "
+"Every language construct gets its own class:"
+#
+# Connections:
+# - `parser.py` constructs these dataclasses when parsing source code.
+# - `semantic.py` walks instances of these nodes to perform type
+#   checking and to populate the `SymbolTable`.
 
 @dataclass
 class Program:

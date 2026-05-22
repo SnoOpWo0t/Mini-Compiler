@@ -190,6 +190,11 @@ def tac_to_asm(tac):
     readable assembly mnemonics sufficient for demonstration and learning.
     """
     asm = []
+    # Connections:
+    # - `TacGenerator.gen(ast)` (used by `main.py`) produces TAC consumed
+    #   here. The TAC format is plain text lines (see TacGenerator.emit).
+    # - The produced assembly is written by `main.py` to
+    #   `output/assembly.asm` for inspection.
     for line in tac:
         s = line.strip()
         if not s:

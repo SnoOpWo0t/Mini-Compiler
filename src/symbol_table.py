@@ -4,6 +4,12 @@
 arrays. `SymbolTable` maintains a stack of scope dictionaries; lookup
 searches from inner to outer scopes. The `render` method produces a
 human-readable table suitable for writing to `output/symbol_table.txt`.
+
+Connections:
+- `semantic.py` creates/uses `Symbol` instances and calls
+    `SymbolTable.insert/lookup/enter/exit` while analyzing the AST.
+- `main.py` writes the rendered output returned by
+    `SymbolTable.render()` after semantic analysis.
 """
 
 

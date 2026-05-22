@@ -2,6 +2,13 @@
 
 Each `p_` function is a production that constructs AST nodes defined
 in `ast_nodes`. Errors are collected in `syntax_errors` for reporting.
+
+Connections:
+- Imports `tokens` from `lexer.py` (PLY requires token names at import)
+- Builds AST nodes (from `ast_nodes.py`) which are consumed by
+    `semantic.py` (type checking) and `codegen.py` (TAC generation).
+- Exports `build_parser()` which `main.py` calls to obtain a parser
+    object and `syntax_errors` which `main.py` inspects after parsing.
 """
 
 import ply.yacc as yacc
