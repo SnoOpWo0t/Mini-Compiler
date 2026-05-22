@@ -30,6 +30,9 @@ HERE    = os.path.dirname(os.path.abspath(__file__))
 PROJECT = os.path.dirname(HERE)
 OUT     = os.path.join(PROJECT, "output")
 os.makedirs(OUT, exist_ok=True)
+# `OUT` is the directory where every compiler phase writes its artifacts.
+# This script orchestrates all phases in sequence and emits human-readable
+# summaries to the console as well as full outputs to files.
 
 
 def banner(title):

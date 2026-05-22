@@ -1,3 +1,12 @@
+"""Simple scoped symbol table utilities.
+
+`Symbol` is a compact record describing variables, functions, params and
+arrays. `SymbolTable` maintains a stack of scope dictionaries; lookup
+searches from inner to outer scopes. The `render` method produces a
+human-readable table suitable for writing to `output/symbol_table.txt`.
+"""
+
+
 class Symbol:
     __slots__ = ("name", "type", "kind", "scope", "line", "address",
                  "params", "is_array", "size")
@@ -24,10 +33,12 @@ class SymbolTable:
         self.all         = []
 
     def enter(self, name):
+        # Enter a new nested scope (e.g. function body)
         self.scopes.append({})
         self.scope_names.append(name)
 
     def exit(self):
+        # Leave the current scope
         self.scopes.pop()
         self.scope_names.pop()
 

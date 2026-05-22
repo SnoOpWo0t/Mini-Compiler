@@ -1,3 +1,9 @@
+"""Parser (PLY Yacc) grammar for the Mini-Compiler.
+
+Each `p_` function is a production that constructs AST nodes defined
+in `ast_nodes`. Errors are collected in `syntax_errors` for reporting.
+"""
+
 import ply.yacc as yacc
 
 from lexer import tokens  # noqa: F401  (PLY needs the name)

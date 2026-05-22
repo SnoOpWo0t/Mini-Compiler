@@ -1,6 +1,14 @@
+"""Lexer definitions for the Mini-Compiler using PLY.
+
+Defines token regexes, reserved words, and helper utilities to run
+the lexer and render token lists for debugging and output files.
+"""
+
 import ply.lex as lex
 
 
+# Mapping of reserved identifiers to token names.
+# e.g. the word 'int' becomes token type 'INT'.
 reserved = {
     "int":      "INT",
     "float":    "FLOAT",
@@ -17,6 +25,7 @@ reserved = {
     "printf":   "PRINTF",
 }
 
+# Full token list PLY uses. Includes punctuation, operators and reserved names.
 tokens = [
     "NUMBER", "FNUM", "STRING", "ID",
     "PLUS", "MINUS", "MUL", "DIV", "MOD",
@@ -99,6 +108,7 @@ def t_newline(t):
 
 
 def t_error(t):
+    # Report illegal character and skip it so lexer can continue.
     print(f"Line {t.lineno}: lexical error: illegal character {t.value[0]!r}")
     t.lexer.skip(1)
 
@@ -130,6 +140,7 @@ def tokenize_all(source):
 
 
 def build_lexer():
+    # Construct and return a PLY lexer instance for parsing use.
     return lex.lex(errorlog=lex.NullLogger())
 
 

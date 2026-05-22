@@ -1,3 +1,10 @@
+"""Semantic analysis: build symbol table and check types/scopes.
+
+This walker traverses the AST, inserts symbols into the scoped
+`SymbolTable`, and reports semantic errors such as redeclarations,
+undefined identifiers, type mismatches and invalid array usage.
+"""
+
 import ast_nodes as A
 from symbol_table import Symbol, SymbolTable
 

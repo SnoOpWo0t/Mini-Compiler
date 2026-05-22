@@ -1,11 +1,18 @@
+"""Code generation helpers.
+
+Phase 4 produces three-address code (TAC) from the AST via `TacGenerator`.
+Phase 5 lowers TAC into a simple x86-like assembly via `tac_to_asm`.
+This module keeps both phases for easy inspection and learning.
+"""
+
 from typing import List
 
 import ast_nodes as A
 
 
-# ============================================================================
-#   PHASE 4 : THREE-ADDRESS CODE
-# ============================================================================
+# ---------------------------------------------------------------------------
+# PHASE 4: Three-address code (TAC) generator
+# ---------------------------------------------------------------------------
 
 
 class TacGenerator:
@@ -23,6 +30,7 @@ class TacGenerator:
         return f"L{self.lcount}"
 
     def emit(self, *parts):
+        # Append a formatted TAC line. TAC is plain text ; easy to debug.
         self.code.append(" ".join(str(p) for p in parts))
 
     def gen(self, prog: A.Program):
@@ -176,6 +184,11 @@ OP_TO_ASM = {
 
 
 def tac_to_asm(tac):
+    """Lower TAC (list of text lines) into a small x86-like assembly.
+
+    The backend is intentionally simple: it translates TAC patterns into
+    readable assembly mnemonics sufficient for demonstration and learning.
+    """
     asm = []
     for line in tac:
         s = line.strip()

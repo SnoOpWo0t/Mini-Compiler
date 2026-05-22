@@ -1,6 +1,9 @@
 from dataclasses import dataclass
 from typing import Any, List, Optional, Tuple
-#Abstract Syntax Tree
+
+# AST node definitions for the Mini-Compiler.
+# Each dataclass represents an AST node produced by the parser.
+# Keep these lightweight: fields map directly to language constructs.
 
 @dataclass
 class Program:
@@ -135,6 +138,7 @@ class StringLit:
 def ast_str(node, indent=0):
     pad = "  " * indent
     if not hasattr(node, "__dataclass_fields__"):
+        # Non-dataclass (primitive) node: show Python repr for clarity
         return pad + repr(node)
     out = [pad + type(node).__name__]
     for fname in node.__dataclass_fields__:
